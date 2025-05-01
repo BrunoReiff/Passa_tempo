@@ -25,27 +25,29 @@ registro *completaRegistro(int qnt){
     return reg;
 }
 
+int comparaReg(registro a, registro b){
+    if(a.ano != b.ano)
+        return a.ano - b.ano;
+    if(a.mes != b.mes) 
+        return a.mes - b.mes;
+    return a.dia - b.dia;
+}
+
 int particiona(registro *v, int inicio, int fim){
-    int pivo_ano = (v[inicio].ano + v[fim].ano + v[(inicio + fim)/2].ano)/3;
-    int pivo_mes = (v[inicio].mes + v[fim].mes + v[(inicio + fim)/2].mes)/3;
-    int pivo_dia = (v[inicio].dia + v[fim].dia + v[(inicio + fim)/2].dia)/3;
-    while(inicio < fim){
-        while   (inicio < fim && 
-                (v[inicio].ano <= pivo_ano || 
-                (v[inicio].ano == pivo_ano && v[inicio].mes <= pivo_mes) || 
-                (v[inicio].ano == pivo_ano && v[inicio].mes == pivo_mes && v[inicio].dia <= pivo_dia))){
+    registro pivo = v[(inicio + fim)/2];
+    while(inicio <= fim){
+        while(comparaReg(v[inicio], pivo) < 0){
             inicio++;
         }
-        while   (inicio < fim && 
-                (v[fim].ano > pivo_ano || 
-                (v[fim].ano == pivo_ano && v[fim].mes > pivo_mes) || 
-                (v[fim].ano == pivo_ano && v[fim].mes == pivo_mes && v[fim].dia > pivo_dia))){
+        while(comparaReg(v[fim], pivo) > 0){
             fim--;
         }
-        if(inicio < fim){
+        if(inicio <= fim){
             registro aux = v[inicio];
             v[inicio] = v[fim];
             v[fim] = aux;
+            inicio++;
+            fim--;
         }
     }
     return inicio; 
@@ -55,7 +57,7 @@ void quickSort(registro *v, int inicio, int fim){
     if(inicio < fim){
         int pos = particiona(v, inicio, fim);
         quickSort(v, inicio, pos - 1);
-        quickSort(v, pos + 1, fim);
+        quickSort(v, pos, fim);
     }
 }
 
@@ -65,7 +67,7 @@ int main()
 
     printf("----- COMO OS DADOS VIERAM -----\n");
     for(int i = 0; i < 40; i++){
-        printf("\ndia: %i - mes: %i - ano: %i", reg[i].dia, reg[i].mes, reg[i].ano);
+        printf("\nRegistro(%i): %i/%i/%i", i+1, reg[i].dia, reg[i].mes, reg[i].ano);
     }
     printf("\n---------------------------------------------\n");
 
@@ -73,7 +75,7 @@ int main()
     
     printf("----- COMO OS DADOS FICARAM -----\n");
     for(int i = 0; i < 40; i++){
-        printf("\ndia: %i - mes: %i - ano: %i", reg[i].dia, reg[i].mes, reg[i].ano);
+        printf("\nRegistro(%i): %i/%i/%i", i+1, reg[i].dia, reg[i].mes, reg[i].ano);
     }
     printf("\n---------------------------------------------");
 
