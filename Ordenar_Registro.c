@@ -31,9 +31,9 @@ int particiona(registro *v, int inicio, int fim){
     int pivo_dia = (v[inicio].dia + v[fim].dia + v[(inicio + fim)/2].dia)/3;
     while(inicio < fim){
         while   (inicio < fim && 
-                (v[inicio].ano < pivo_ano || 
-                (v[inicio].ano == pivo_ano && v[inicio].mes < pivo_mes) || 
-                (v[inicio].ano == pivo_ano && v[inicio].mes == pivo_mes && v[inicio].dia < pivo_dia))){
+                (v[inicio].ano <= pivo_ano || 
+                (v[inicio].ano == pivo_ano && v[inicio].mes <= pivo_mes) || 
+                (v[inicio].ano == pivo_ano && v[inicio].mes == pivo_mes && v[inicio].dia <= pivo_dia))){
             inicio++;
         }
         while   (inicio < fim && 
